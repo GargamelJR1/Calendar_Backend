@@ -1,6 +1,7 @@
 package com.calendar.calendarapi.location;
 
 import com.calendar.calendarapi.event.Event;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -22,6 +23,7 @@ public class Location
     private String address;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Event> events;
 
     public Location() {

@@ -1,7 +1,5 @@
 package com.calendar.calendarapi.event;
 
-import com.calendar.calendarapi.location.Location;
-
 import java.util.Date;
 
 public class EventDTO
@@ -14,22 +12,20 @@ public class EventDTO
 
     private Date endDate;
 
-    private byte[] image;
-
-    private Location location;
+    private long locationId;
 
     private boolean isPublic;
 
     public EventDTO() {
     }
 
-    public EventDTO(String name, String description, Date startDate, Date endDate, byte[] image, Location location, boolean isPublic) {
+    public EventDTO(String name, String description, Date startDate, Date endDate, byte[] image, long locationId, boolean isPublic) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.image = image;
-        this.location = location;
+
+        this.locationId = locationId;
         this.isPublic = isPublic;
     }
 
@@ -38,8 +34,7 @@ public class EventDTO
         this.description = event.getDescription();
         this.startDate = event.getStartDate();
         this.endDate = event.getEndDate();
-        this.image = event.getImage();
-        this.location = event.getLocation();
+        this.locationId = event.getLocation().getId();
         this.isPublic = event.isPublic();
     }
 
@@ -75,20 +70,12 @@ public class EventDTO
         this.endDate = endDate;
     }
 
-    public byte[] getImage() {
-        return image;
+    public long getLocationId() {
+        return locationId;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocationId(long locationId) {
+        this.locationId = locationId;
     }
 
     public boolean isPublic() {

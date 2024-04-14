@@ -24,7 +24,7 @@ public class EventController
 
     @PostMapping("/add")
     public ResponseEntity<Event> addEvent(@RequestBody EventDTO event) {
-        return eventService.addEvent(new Event(event))
+        return eventService.addEvent(event)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
@@ -47,5 +47,12 @@ public class EventController
         return eventService.getEventById(Long.parseLong(id))
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/add{id}/image")
+    public ResponseEntity<Event> addImageToEvent(@PathVariable String id, @RequestBody byte[] image) {
+        return eventService.addImageToEvent(Long.parseLong(id), image)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 }

@@ -49,16 +49,6 @@ public class Event
         this.isPublic = isPublic;
     }
 
-    public Event(EventDTO eventDTO) {
-        this.name = eventDTO.getName();
-        this.description = eventDTO.getDescription();
-        this.startDate = eventDTO.getStartDate();
-        this.endDate = eventDTO.getEndDate();
-        this.image = eventDTO.getImage();
-        this.location = eventDTO.getLocation();
-        this.isPublic = eventDTO.isPublic();
-    }
-
     public long getId() {
         return id;
     }

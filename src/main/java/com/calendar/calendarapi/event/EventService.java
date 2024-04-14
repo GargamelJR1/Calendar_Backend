@@ -1,5 +1,7 @@
 package com.calendar.calendarapi.event;
 
+import com.calendar.calendarapi.location.Location;
+import com.calendar.calendarapi.location.LocationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +11,11 @@ import java.util.Optional;
 public class EventService
 {
     private final EventRepository eventRepository;
+    private final LocationService locationService;
 
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, LocationService locationService) {
         this.eventRepository = eventRepository;
+        this.locationService = locationService;
     }
 
     public Optional<List<Event>> getAllEvents() {
@@ -20,6 +24,19 @@ public class EventService
 
     public Optional<Event> addEvent(Event event) {
         return Optional.of(eventRepository.save(event));
+    }
+
+    public Optional<Event> addEvent(EventDTO event) {
+        Location location = locationService.getLocationById(event.getLocationId())
+                .orElseThrow(() -> new IllegalArgumentException("Location not found"));
+        Event newEvent = new Event();
+        newEvent.setName(event.getName());
+        newEvent.setDescription(event.getDescription());
+        newEvent.setStartDate(event.getStartDate());
+        newEvent.setEndDate(event.getEndDate());
+        newEvent.setLocation(location);
+        newEvent.setPublic(event.isPublic());
+        return Optional.of(eventRepository.save(newEvent));
     }
 
     public Optional<Event> updateEvent(Event event) {
@@ -38,4 +55,10 @@ public class EventService
         return eventRepository.findById(id);
     }
 
+    public Optional<Event> addImageToEvent(long id, byte[] image) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+        event.setImage(image);
+        return Optional.of(eventRepository.save(event));
+    }
 }
