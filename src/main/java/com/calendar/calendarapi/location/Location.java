@@ -1,10 +1,10 @@
 package com.calendar.calendarapi.location;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.calendar.calendarapi.event.Event;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 
 @Entity
 public class Location
@@ -21,6 +21,9 @@ public class Location
 
     private String address;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Event> events;
+
     public Location() {
     }
 
@@ -29,6 +32,12 @@ public class Location
         this.longitude = longitude;
         this.latitude = latitude;
         this.address = address;
+    }
+
+    public Location(LocationDTO locationDTO) {
+        this.longitude = locationDTO.getLongitude();
+        this.latitude = locationDTO.getLatitude();
+        this.address = locationDTO.getAddress();
     }
 
     public long getId() {

@@ -16,28 +16,28 @@ public class LocationController
     }
 
     @PostMapping("")
-    public ResponseEntity<LocationDTO> getLocationByCoordinates(@RequestBody Location location) {
+    public ResponseEntity<Location> getLocationByCoordinates(@RequestBody Location location) {
         return locationService.getLocationByCoordinates(location.getLatitude(), location.getLongitude())
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("")
-    public ResponseEntity<List<LocationDTO>> getAllLocations() {
+    public ResponseEntity<List<Location>> getAllLocations() {
         return locationService.getAllLocations()
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/add")
-    public ResponseEntity<LocationDTO> addLocation(@RequestBody Location location) {
-        return locationService.addLocation(location)
+    public ResponseEntity<Location> addLocation(@RequestBody LocationDTO location) {
+        return locationService.addLocation(new Location(location))
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @PutMapping("")
-    public ResponseEntity<LocationDTO> updateAddress(@RequestBody Location location) {
+    public ResponseEntity<Location> updateAddress(@RequestBody Location location) {
         return locationService.updateAddress(location)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.badRequest().build());
