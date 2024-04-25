@@ -31,22 +31,19 @@ public class Event
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private Location location;
 
-    private boolean isPublic;
-
     // TODO: tags
     // TODO: users
 
     public Event() {
     }
 
-    public Event(String name, String description, Date startDate, Date endDate, byte[] image, Location location, boolean isPublic) {
+    public Event(String name, String description, Date startDate, Date endDate, byte[] image, Location location) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.image = image;
         this.location = location;
-        this.isPublic = isPublic;
     }
 
     public long getId() {
@@ -99,13 +96,5 @@ public class Event
 
     public void setLocation(Location location) {
         this.location = location;
-    }
-
-    public boolean isPublic() {
-        return isPublic;
-    }
-
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
     }
 }

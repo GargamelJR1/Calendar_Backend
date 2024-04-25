@@ -35,7 +35,6 @@ public class EventService
         newEvent.setStartDate(event.getStartDate());
         newEvent.setEndDate(event.getEndDate());
         newEvent.setLocation(location);
-        newEvent.setPublic(event.isPublic());
         return Optional.of(eventRepository.save(newEvent));
     }
 

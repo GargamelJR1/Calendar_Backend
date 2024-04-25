@@ -14,19 +14,17 @@ public class EventDTO
 
     private long locationId;
 
-    private boolean isPublic;
 
     public EventDTO() {
     }
 
-    public EventDTO(String name, String description, Date startDate, Date endDate, byte[] image, long locationId, boolean isPublic) {
+    public EventDTO(String name, String description, Date startDate, Date endDate, byte[] image, long locationId) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
 
         this.locationId = locationId;
-        this.isPublic = isPublic;
     }
 
     public EventDTO(Event event) {
@@ -35,7 +33,6 @@ public class EventDTO
         this.startDate = event.getStartDate();
         this.endDate = event.getEndDate();
         this.locationId = event.getLocation().getId();
-        this.isPublic = event.isPublic();
     }
 
     public String getName() {
@@ -76,13 +73,5 @@ public class EventDTO
 
     public void setLocationId(long locationId) {
         this.locationId = locationId;
-    }
-
-    public boolean isPublic() {
-        return isPublic;
-    }
-
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
     }
 }
