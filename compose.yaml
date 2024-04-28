@@ -5,4 +5,4 @@ services:
       - 'MYSQL_DATABASE=calendarPP'
       - 'MYSQL_ROOT_PASSWORD=mysql'
     ports:
-      - '3306:3306'
+      - '3307:3306'
