@@ -1,12 +1,15 @@
 package com.calendar.calendarapi.task;
 
 import com.calendar.calendarapi.priority.Priority;
+import com.calendar.calendarapi.tag.Tag;
 import com.calendar.calendarapi.taskGroup.TaskGroup;
 import com.calendar.calendarapi.taskType.TaskType;
+import com.calendar.calendarapi.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Task {
@@ -26,21 +29,50 @@ public class Task {
     @ManyToOne
     @JoinColumn(name="task_group_id",nullable=false)
     private TaskGroup group;
-    private int tags; // tag klucz obcy
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "task_tags",
+            joinColumns = { @JoinColumn(name = "task_id") },
+            inverseJoinColumns = { @JoinColumn(name = "tag_id") }
+    )
+    private Set<Tag> tags; // tag klucz obcy
+
+
 
 
     public Task() {
     }
 
-    public Task(long id, Date deadline, boolean completed, TaskType type, Priority priority, int tags) {
+    public Task(long id, Date deadline, boolean completed, TaskType type, Priority priority, TaskGroup group, User user, Set<Tag> tags) {
         this.id = id;
         this.deadline = deadline;
         this.completed = completed;
         this.type = type;
         this.priority = priority;
+        this.group = group;
+        this.user = user;
         this.tags = tags;
     }
 
+    public TaskGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(TaskGroup group) {
+        this.group = group;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public long getId() {
         return id;
@@ -82,11 +114,11 @@ public class Task {
         this.priority = priority;
     }
 
-    public int getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(int tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Priority {
@@ -14,11 +15,11 @@ public class Priority {
     @NotNull
     private String name;
     @OneToMany(mappedBy = "priority")
-    private List<Task> tasks;
+    private Set<Task> tasks;
 
     public Priority() {
     }
-    public Priority(long id, String name, List<Task> tasks) {
+    public Priority(long id, String name, Set<Task> tasks) {
         this.id = id;
         this.name = name;
         this.tasks = tasks;
@@ -40,11 +41,11 @@ public class Priority {
         this.name = name;
     }
 
-    public List<Task> getTasks() {
+    public Set<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
     }
 }

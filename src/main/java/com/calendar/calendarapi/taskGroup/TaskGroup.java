@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class TaskGroup {
@@ -20,12 +21,12 @@ public class TaskGroup {
     private boolean completed;
 
     @OneToMany(mappedBy = "group")
-    private List<Task> subTasks;
+    private Set<Task> subTasks;
 
     public TaskGroup() {
     }
 
-    public TaskGroup(long id, String name, String description, boolean completed, List<Task> subTasks) {
+    public TaskGroup(long id, String name, String description, boolean completed, Set<Task> subTasks) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -65,11 +66,11 @@ public class TaskGroup {
         this.completed = completed;
     }
 
-    public List<Task> getSubTasks() {
+    public Set<Task> getSubTasks() {
         return subTasks;
     }
 
-    public void setSubTasks(List<Task> subTasks) {
+    public void setSubTasks(Set<Task> subTasks) {
         this.subTasks = subTasks;
     }
 }

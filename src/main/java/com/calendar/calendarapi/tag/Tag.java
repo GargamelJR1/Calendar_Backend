@@ -1,10 +1,12 @@
 package com.calendar.calendarapi.tag;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.calendar.calendarapi.event.Event;
+import com.calendar.calendarapi.task.Task;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Tag {
@@ -14,12 +16,17 @@ public class Tag {
     @NotNull
     private String name;
 
+    @ManyToMany(mappedBy = "tags")
+    private Set<Task> tasks;
+    @ManyToMany(mappedBy = "tags")
+    private Set<Event> events;
     public Tag() {
     }
 
-    public Tag(long id, String name) {
+    public Tag(long id, String name, Set<Task> tasks) {
         this.id = id;
         this.name = name;
+        this.tasks = tasks;
     }
 
     public long getId() {
@@ -36,5 +43,13 @@ public class Tag {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
     }
 }

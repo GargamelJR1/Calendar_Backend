@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class TaskType {
@@ -19,11 +20,11 @@ public class TaskType {
     private String description;
 
     @OneToMany(mappedBy = "type")
-    private List<Task> tasks;
+    private Set<Task> tasks;
     public TaskType() {
     }
 
-    public TaskType(long id, String name, String description, List<Task> tasks) {
+    public TaskType(long id, String name, String description, Set<Task> tasks) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -54,11 +55,11 @@ public class TaskType {
         this.description = description;
     }
 
-    public List<Task> getTasks() {
+    public Set<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
     }
 }

@@ -1,5 +1,7 @@
 package com.calendar.calendarapi.user;
 
+import com.calendar.calendarapi.event.Event;
+import com.calendar.calendarapi.task.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +12,7 @@ import java.security.Principal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User implements UserDetails, Principal
@@ -31,17 +34,25 @@ public class User implements UserDetails, Principal
     private String password;
 
     private Date birthDate;
+    @OneToMany(mappedBy = "user")
+    private Set<Task>tasks;
 
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Event> events;
     public User() {
     }
 
-    public User(int id, String firstName, String lastName, String email, String password, Date birthDate) {
+
+    public User(long id, String firstName, String lastName, String email, String password, Date birthDate, Set<Task> tasks, Set<Event> events) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.birthDate = birthDate;
+        this.tasks = tasks;
+        this.events = events;
     }
 
     public long getId() {
@@ -87,6 +98,26 @@ public class User implements UserDetails, Principal
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
     }
 
     @Override
