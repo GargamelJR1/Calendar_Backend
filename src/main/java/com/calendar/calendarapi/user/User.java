@@ -34,15 +34,15 @@ public class User implements UserDetails, Principal
     private String password;
 
     private Date birthDate;
-    @OneToMany(mappedBy = "user")
-    private Set<Task>tasks;
 
+    @OneToMany
+    private Set<Task> tasks;
 
     @ManyToMany(mappedBy = "users")
     private Set<Event> events;
+
     public User() {
     }
-
 
     public User(long id, String firstName, String lastName, String email, String password, Date birthDate, Set<Task> tasks, Set<Event> events) {
         this.id = id;

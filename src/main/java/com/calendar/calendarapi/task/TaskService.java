@@ -1,21 +1,22 @@
 package com.calendar.calendarapi.task;
 
+import com.calendar.calendarapi.tag.Tag;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
-public class TaskService {
-
+public class TaskService
+{
     private final TaskRepository taskRepository;
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
-    public Optional<Set<Task>> getAllTasks() {
-        return Optional.of((Set<Task>) taskRepository.findAll());
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
     }
 
     public Optional<Task> addTask(Task task) {
@@ -38,4 +39,32 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
+    public List<Task> getTasksByTag(Tag tag) {
+        return getTasksByTagId(tag.getId());
+    }
+
+    public List<Task> getTasksByTagId(long tagId) {
+        return taskRepository.getTasksByTagId(tagId);
+    }
+
+    public List<Task> getCompletedTasks() {
+        return taskRepository.getTasksByCompleted(true);
+    }
+
+    public List<Task> getUncompletedTasks() {
+        return taskRepository.getTasksByCompleted(false);
+    }
+
+    public List<Task> getTasksByPriority(String priority) {
+        return taskRepository.getTasksByPriority(priority);
+    }
+
+    public List<Task> getTasksByMasterTask(Task masterTask) {
+        return getTasksByMasterTaskId(masterTask.getId());
+    }
+
+    public List<Task> getTasksByMasterTaskId(long masterTaskId) {
+        Task masterTask = taskRepository.findById(masterTaskId).orElseThrow(() -> new IllegalArgumentException("Master task not found"));
+        return taskRepository.getTasksByMasterTask(masterTask);
+    }
 }

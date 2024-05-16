@@ -8,8 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -24,9 +23,9 @@ public class Event
 
     private String description;
 
-    private Date startDate;
+    private LocalDateTime startDate;
 
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @Lob
     private byte[] image;
@@ -54,7 +53,7 @@ public class Event
     public Event() {
     }
 
-    public Event(long id, String name, String description, Date startDate, Date endDate, byte[] image, Location location, Set<Tag> tags) {
+    public Event(long id, String name, String description, LocalDateTime startDate, LocalDateTime endDate, byte[] image, Location location, Set<Tag> tags) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -93,19 +92,19 @@ public class Event
         this.description = description;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

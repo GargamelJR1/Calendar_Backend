@@ -3,11 +3,12 @@ package com.calendar.calendarapi.task;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/task")
-public class TaskController {
+public class TaskController
+{
 
     private final TaskService taskService;
 
@@ -16,10 +17,8 @@ public class TaskController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Set<Task>> getAllTasks() {
-        return taskService.getAllTasks()
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<List<Task>> getAllTasks() {
+        return ResponseEntity.ok(taskService.getAllTasks());
     }
 
     @PostMapping("/add")
@@ -49,4 +48,28 @@ public class TaskController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/tag/{tagId}")
+    public ResponseEntity<List<Task>> getTasksByTagId(@PathVariable long tagId) {
+        return ResponseEntity.ok(taskService.getTasksByTagId(tagId));
+    }
+
+    @GetMapping("/completed")
+    public ResponseEntity<List<Task>> getCompletedTasks() {
+        return ResponseEntity.ok(taskService.getCompletedTasks());
+    }
+
+    @GetMapping("/uncompleted")
+    public ResponseEntity<List<Task>> getUncompletedTasks() {
+        return ResponseEntity.ok(taskService.getUncompletedTasks());
+    }
+
+    @GetMapping("/priority/{priority}")
+    public ResponseEntity<List<Task>> getTasksByPriority(@PathVariable String priority) {
+        return ResponseEntity.ok(taskService.getTasksByPriority(priority));
+    }
+
+    @GetMapping("/master/{masterTaskId}")
+    public ResponseEntity<List<Task>> getTasksByMasterTaskId(@PathVariable long masterTaskId) {
+        return ResponseEntity.ok(taskService.getTasksByMasterTaskId(masterTaskId));
+    }
 }

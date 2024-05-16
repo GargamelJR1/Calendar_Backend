@@ -1,6 +1,6 @@
 package com.calendar.calendarapi.event;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class EventDTO
 {
@@ -8,9 +8,9 @@ public class EventDTO
 
     private String description;
 
-    private Date startDate;
+    private LocalDateTime startDate;
 
-    private Date endDate;
+    private LocalDateTime endDate;
 
     private long locationId;
 
@@ -18,11 +18,11 @@ public class EventDTO
     public EventDTO() {
     }
 
-    public EventDTO(String name, String description, Date startDate, Date endDate, byte[] image, long locationId) {
+    public EventDTO(String name, String description, LocalDateTime startLocalDateTime, LocalDateTime endLocalDateTime, byte[] image, long locationId) {
         this.name = name;
         this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = startLocalDateTime;
+        this.endDate = endLocalDateTime;
 
         this.locationId = locationId;
     }
@@ -51,19 +51,19 @@ public class EventDTO
         this.description = description;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

@@ -1,93 +1,107 @@
 package com.calendar.calendarapi.task;
 
-import com.calendar.calendarapi.priority.Priority;
 import com.calendar.calendarapi.tag.Tag;
-import com.calendar.calendarapi.taskGroup.TaskGroup;
-import com.calendar.calendarapi.taskType.TaskType;
 import com.calendar.calendarapi.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-public class Task {
+public class Task
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotNull
-    private Date deadline;
-    @NotNull
-    private boolean completed;
-    @ManyToOne
-    @JoinColumn(name="task_type_id", nullable=false)
-    private TaskType type; //priority klucz obcy
-    @ManyToOne
-    @JoinColumn(name="priority_id", nullable=false)
-    private Priority priority; //priority klucz obcy
-    @ManyToOne
-    @JoinColumn(name="task_group_id",nullable=false)
-    private TaskGroup group;
-    @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
-    private User user;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    private String name;
+
+    private String description;
+
+    @NotNull
+    private LocalDateTime createdAt;
+
+    private LocalDateTime deadline;
+
+    private LocalDateTime completedAt;
+
+    private boolean completed;
+
+    private String priority;
+
+    @ManyToMany
     @JoinTable(
             name = "task_tags",
-            joinColumns = { @JoinColumn(name = "task_id") },
-            inverseJoinColumns = { @JoinColumn(name = "tag_id") }
+            joinColumns = {@JoinColumn(name = "task_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")}
     )
-    private Set<Tag> tags; // tag klucz obcy
+    private Set<Tag> tags;
 
+    @ManyToOne
+    private Task masterTask;
 
-
+    @ManyToOne
+    private User user;
 
     public Task() {
     }
 
-    public Task(long id, Date deadline, boolean completed, TaskType type, Priority priority, TaskGroup group, User user, Set<Tag> tags) {
+    public Task(long id, String name, String description, LocalDateTime createdAt, LocalDateTime deadline, LocalDateTime completedAt, boolean completed, String priority, Set<Tag> tags, Task masterTask) {
         this.id = id;
+        this.name = name;
+        this.description = description;
+        this.createdAt = createdAt;
         this.deadline = deadline;
+        this.completedAt = completedAt;
         this.completed = completed;
-        this.type = type;
         this.priority = priority;
-        this.group = group;
-        this.user = user;
         this.tags = tags;
-    }
-
-    public TaskGroup getGroup() {
-        return group;
-    }
-
-    public void setGroup(TaskGroup group) {
-        this.group = group;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+        this.masterTask = masterTask;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public String getName() {
+        return name;
     }
 
-    public Date getDeadline() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
+    }
+
+    public LocalDateTime getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(LocalDateTime completedAt) {
+        this.completedAt = completedAt;
     }
 
     public boolean isCompleted() {
@@ -98,19 +112,11 @@ public class Task {
         this.completed = completed;
     }
 
-    public TaskType getType() {
-        return type;
-    }
-
-    public void setType(TaskType type) {
-        this.type = type;
-    }
-
-    public Priority getPriority() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(Priority priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 
@@ -120,5 +126,25 @@ public class Task {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Task getMasterTask() {
+        return masterTask;
+    }
+
+    public void setMasterTask(Task masterTask) {
+        this.masterTask = masterTask;
+    }
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+    }
+
+    public void removeTag(Tag tag) {
+        this.tags.remove(tag);
+    }
+
+    public void setMasterTaskNull() {
+        this.masterTask = null;
     }
 }
