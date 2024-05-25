@@ -38,6 +38,9 @@ public class Task
     )
     private Set<Tag> tags;
 
+    @OneToMany(mappedBy = "masterTask")
+    private Set<Task> subTasks;
+
     @ManyToOne
     private Task masterTask;
 
@@ -146,5 +149,21 @@ public class Task
 
     public void setMasterTaskNull() {
         this.masterTask = null;
+    }
+
+    public Set<Task> getSubTasks() {
+        return subTasks;
+    }
+
+    public void setSubTasks(Set<Task> subTasks) {
+        this.subTasks = subTasks;
+    }
+
+    public void addSubTask(Task task) {
+        this.subTasks.add(task);
+    }
+
+    public void removeSubTask(Task task) {
+        this.subTasks.remove(task);
     }
 }
