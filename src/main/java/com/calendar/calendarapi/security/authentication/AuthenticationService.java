@@ -40,7 +40,7 @@ public class AuthenticationService
         String tokenString = jwtService.generateToken(user);
         saveUserToken(user, tokenString);
 
-        return new AuthenticationResponse(tokenString);
+        return new AuthenticationResponse(tokenString, user.getEmail());
     }
 
     public AuthenticationResponse authenticate(User user) {
@@ -57,7 +57,7 @@ public class AuthenticationService
         revokeUserTokens(userFromDb);
         saveUserToken(userFromDb, token);
 
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token, user.getEmail());
     }
 
     private void saveUserToken(User user, String token) {
