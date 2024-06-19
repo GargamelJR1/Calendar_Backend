@@ -27,15 +27,13 @@ public class LogoutService implements LogoutHandler
         final String token;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return;
-        }
-
-        token = authHeader.substring(7);
-        Token tokenDb = tokenRepository.findByToken(token).orElse(null);
-        if (tokenDb != null) {
-            tokenDb.setLogged(false);
-            tokenRepository.delete(tokenDb);
-            SecurityContextHolder.clearContext();
+            token = authHeader.substring(7);
+            Token tokenDb = tokenRepository.findByToken(token).orElse(null);
+            if (tokenDb != null) {
+                tokenDb.setLogged(false);
+                tokenRepository.delete(tokenDb);
+                SecurityContextHolder.clearContext();
+            }
         }
     }
 }
