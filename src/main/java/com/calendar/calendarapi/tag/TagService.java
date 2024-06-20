@@ -2,10 +2,13 @@ package com.calendar.calendarapi.tag;
 
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 @Service
-public class TagService {
+public class TagService
+{
     private final TagRepository tagRepository;
 
     public TagService(TagRepository tagRepository) {
@@ -13,7 +16,7 @@ public class TagService {
     }
 
     public Optional<Set<Tag>> getAllTags() {
-        return Optional.of((Set<Tag>) tagRepository.findAll());
+        return Optional.of(new HashSet<>(tagRepository.findAll()));
     }
 
     public Optional<Tag> addTag(Tag tag) {
