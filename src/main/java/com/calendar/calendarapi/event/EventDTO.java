@@ -13,10 +13,11 @@ public record EventDTO
                 Set<String> usersEmails,
                 double latitude,
                 double longitude,
-                String address
+                String address,
+                String color
         )
 {
     Event toEvent() {
-        return new Event(0, name, description, startDate, endDate, null, null, null);
+        return new Event(0, name, description, startDate, endDate, null, null, null, color);
     }
 }

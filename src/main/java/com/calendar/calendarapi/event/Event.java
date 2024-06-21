@@ -51,10 +51,12 @@ public class Event
     )
     private Set<User> users = new HashSet<>();
 
+    private String color;
+
     public Event() {
     }
 
-    public Event(long id, String name, String description, LocalDateTime startDate, LocalDateTime endDate, byte[] image, Location location, Set<Tag> tags) {
+    public Event(long id, String name, String description, LocalDateTime startDate, LocalDateTime endDate, byte[] image, Location location, Set<Tag> tags, String color) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -63,6 +65,7 @@ public class Event
         this.image = image;
         this.location = location;
         this.tags = tags;
+        this.color = color;
     }
 
     public Set<Tag> getTags() {
@@ -151,5 +154,13 @@ public class Event
 
     public void removeUser(User user) {
         users.remove(user);
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }
