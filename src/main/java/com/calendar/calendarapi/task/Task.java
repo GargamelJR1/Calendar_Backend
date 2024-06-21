@@ -2,10 +2,12 @@ package com.calendar.calendarapi.task;
 
 import com.calendar.calendarapi.tag.Tag;
 import com.calendar.calendarapi.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -36,14 +38,17 @@ public class Task
             joinColumns = {@JoinColumn(name = "task_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")}
     )
-    private Set<Tag> tags;
+    private Set<Tag> tags = new HashSet<>();
 
-    @OneToMany(mappedBy = "masterTask")
-    private Set<Task> subTasks;
+    @OneToMany(mappedBy = "masterTask", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Task> subTasks = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "master_task_id")
     private Task masterTask;
 
+    @JsonIgnore
     @ManyToOne
     private User user;
 
@@ -140,6 +145,8 @@ public class Task
     }
 
     public void addTag(Tag tag) {
+        if (tags == null)
+            tags = new HashSet<>();
         this.tags.add(tag);
     }
 
@@ -165,5 +172,13 @@ public class Task
 
     public void removeSubTask(Task task) {
         this.subTasks.remove(task);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

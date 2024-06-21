@@ -2,31 +2,36 @@ package com.calendar.calendarapi.tag;
 
 import com.calendar.calendarapi.event.Event;
 import com.calendar.calendarapi.task.Task;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Tag {
+public class Tag
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(unique = true)
     @NotNull
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "tags")
     private Set<Task> tasks;
+
     @ManyToMany(mappedBy = "tags")
     private Set<Event> events;
+
     public Tag() {
     }
 
-    public Tag(long id, String name, Set<Task> tasks) {
+    public Tag(long id, String name) {
         this.id = id;
         this.name = name;
-        this.tasks = tasks;
     }
 
     public long getId() {

@@ -7,7 +7,8 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/tag")
-public class TagController {
+public class TagController
+{
     private final TagService tagService;
 
     public TagController(TagService tagService) {
@@ -48,4 +49,10 @@ public class TagController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Tag> getTagByName(@PathVariable String name) {
+        return tagService.getTagByName(name)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

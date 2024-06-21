@@ -16,16 +16,16 @@ public class UserService implements UserDetailsService
         this.userRepository = userRepository;
     }
 
-    public Optional<UserDTO> getUserById(long id) {
-        return userRepository.findById(id).map(UserDTO::new);
+    public Optional<User> getUserById(long id) {
+        return userRepository.findById(id);
     }
 
-    public Optional<UserDTO> addUser(User user) {
-        return Optional.of(userRepository.save(user)).map(UserDTO::new);
+    public Optional<User> addUser(User user) {
+        return Optional.of(userRepository.save(user));
     }
 
-    public Optional<UserDTO> getUserByEmail(String email) {
-        return userRepository.findByEmail(email).map(UserDTO::new);
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override

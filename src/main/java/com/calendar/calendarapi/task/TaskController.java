@@ -1,19 +1,26 @@
 package com.calendar.calendarapi.task;
 
+import com.calendar.calendarapi.tag.Tag;
+import com.calendar.calendarapi.tag.TagService;
+import com.calendar.calendarapi.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/task")
 public class TaskController
 {
-
+    private final TagService tagService;
     private final TaskService taskService;
+    private final UserService userService;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TagService tagService, TaskService taskService, UserService userService) {
+        this.tagService = tagService;
         this.taskService = taskService;
+        this.userService = userService;
     }
 
     @GetMapping("")
@@ -21,8 +28,32 @@ public class TaskController
         return ResponseEntity.ok(taskService.getAllTasks());
     }
 
+    @GetMapping("/masters")
+    public ResponseEntity<List<Task>> getMasterTasks() {
+        List<Task> masterTasks = taskService.getAllTasks();
+        masterTasks.removeIf(task -> task.getMasterTask() != null);
+        return ResponseEntity.ok(masterTasks);
+    }
+
     @PostMapping("/add")
-    public ResponseEntity<Task> addTask(@RequestBody Task task) {
+    public ResponseEntity<Task> addTask(@RequestBody TaskDTO taskDTO) {
+        Task task = taskDTO.toTask();
+
+        Set<String> tagNames = taskDTO.tags();
+        if (tagNames != null) {
+            for (String tagName : tagNames) {
+                tagService.getTagByName(tagName).ifPresentOrElse(
+                        task::addTag,
+                        () -> tagService.addTag(new Tag(0, tagName)).ifPresent(task::addTag));
+            }
+        }
+
+        userService.getUserByEmail(taskDTO.userEmail())
+                .ifPresent(task::setUser);
+
+        taskService.getTaskById(taskDTO.masterTask())
+                .ifPresent(task::setMasterTask);
+
         return taskService.addTask(task)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.badRequest().build());
@@ -71,5 +102,12 @@ public class TaskController
     @GetMapping("/master/{masterTaskId}")
     public ResponseEntity<List<Task>> getTasksByMasterTaskId(@PathVariable long masterTaskId) {
         return ResponseEntity.ok(taskService.getTasksByMasterTaskId(masterTaskId));
+    }
+
+    @PostMapping("/subtask/add")
+    public ResponseEntity<Task> addSubTask(@RequestBody Task task) {
+        return taskService.addSubTask(task)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 }

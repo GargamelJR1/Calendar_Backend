@@ -39,4 +39,7 @@ public class TagService
         return tagRepository.findById(id);
     }
 
+    public Optional<Tag> getTagByName(String name) {
+        return tagRepository.findByName(name);
+    }
 }

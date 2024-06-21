@@ -67,4 +67,10 @@ public class TaskService
         Task masterTask = taskRepository.findById(masterTaskId).orElseThrow(() -> new IllegalArgumentException("Master task not found"));
         return taskRepository.getTasksByMasterTask(masterTask);
     }
+
+    public Optional<Task> addSubTask(Task task) {
+        Task masterTask = taskRepository.findById(task.getMasterTask().getId()).orElseThrow(() -> new IllegalArgumentException("Master task not found"));
+        task.setMasterTask(masterTask);
+        return Optional.of(taskRepository.save(task));
+    }
 }
