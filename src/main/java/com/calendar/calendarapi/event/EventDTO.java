@@ -10,7 +10,10 @@ public record EventDTO
                 LocalDateTime startDate,
                 LocalDateTime endDate,
                 Set<String> tags,
-                Set<String> usersEmails
+                Set<String> usersEmails,
+                double latitude,
+                double longitude,
+                String address
         )
 {
     Event toEvent() {

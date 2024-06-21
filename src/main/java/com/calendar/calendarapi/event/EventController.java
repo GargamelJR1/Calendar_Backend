@@ -1,5 +1,7 @@
 package com.calendar.calendarapi.event;
 
+import com.calendar.calendarapi.location.Location;
+import com.calendar.calendarapi.location.LocationService;
 import com.calendar.calendarapi.tag.Tag;
 import com.calendar.calendarapi.tag.TagService;
 import com.calendar.calendarapi.user.UserService;
@@ -16,11 +18,13 @@ public class EventController
     private final EventService eventService;
     private final TagService tagService;
     private final UserService userService;
+    private final LocationService locationService;
 
-    public EventController(EventService eventService, TagService tagService, UserService userService) {
+    public EventController(EventService eventService, TagService tagService, UserService userService, LocationService locationService) {
         this.eventService = eventService;
         this.tagService = tagService;
         this.userService = userService;
+        this.locationService = locationService;
     }
 
     @GetMapping("")
@@ -50,6 +54,13 @@ public class EventController
             }
         }
 
+        Location location = locationService.getLocationByCoordinates(eventDTO.latitude(), eventDTO.longitude())
+                .orElseGet(() -> locationService.addLocation(
+                        new Location(0, eventDTO.latitude(), eventDTO.longitude(), eventDTO.address())
+                ).orElseThrow());
+
+        event.setLocation(location);
+
         return eventService.addEvent(event)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.badRequest().build());
@@ -76,6 +87,11 @@ public class EventController
             }
         }
 
+        Location location = locationService.getLocationByCoordinates(eventDTO.latitude(), eventDTO.longitude())
+                .orElseGet(() -> locationService.addLocation(
+                        new Location(0, eventDTO.latitude(), eventDTO.longitude(), eventDTO.address())
+                ).orElseThrow());
+
         eventToUpdate.setName(event.getName());
         eventToUpdate.setDescription(event.getDescription());
         eventToUpdate.setStartDate(event.getStartDate());
@@ -83,6 +99,7 @@ public class EventController
         eventToUpdate.setLocation(event.getLocation());
         eventToUpdate.setTags(event.getTags());
         eventToUpdate.setUsers(event.getUsers());
+        eventToUpdate.setLocation(location);
 
         return eventService.updateEvent(event)
                 .map(ResponseEntity::ok)

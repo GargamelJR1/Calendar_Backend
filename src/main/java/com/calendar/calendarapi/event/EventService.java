@@ -1,7 +1,5 @@
 package com.calendar.calendarapi.event;
 
-import com.calendar.calendarapi.location.Location;
-import com.calendar.calendarapi.location.LocationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,11 +9,9 @@ import java.util.Optional;
 public class EventService
 {
     private final EventRepository eventRepository;
-    private final LocationService locationService;
 
-    public EventService(EventRepository eventRepository, LocationService locationService) {
+    public EventService(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
-        this.locationService = locationService;
     }
 
     public Optional<List<Event>> getAllEvents() {
@@ -24,18 +20,6 @@ public class EventService
 
     public Optional<Event> addEvent(Event event) {
         return Optional.of(eventRepository.save(event));
-    }
-
-    public Optional<Event> addEvent(EventDTO event) {
-        Location location = locationService.getLocationById(event.getLocationId())
-                .orElseThrow(() -> new IllegalArgumentException("Location not found"));
-        Event newEvent = new Event();
-        newEvent.setName(event.getName());
-        newEvent.setDescription(event.getDescription());
-        newEvent.setStartDate(event.getStartDate());
-        newEvent.setEndDate(event.getEndDate());
-        newEvent.setLocation(location);
-        return Optional.of(eventRepository.save(newEvent));
     }
 
     public Optional<Event> updateEvent(Event event) {
