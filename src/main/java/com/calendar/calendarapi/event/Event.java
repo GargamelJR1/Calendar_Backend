@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -34,21 +35,21 @@ public class Event
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private Location location;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "event_tags",
-            joinColumns = { @JoinColumn(name = "event_id") },
-            inverseJoinColumns = { @JoinColumn(name = "tag_id") }
+            joinColumns = {@JoinColumn(name = "event_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")}
     )
-    private Set<Tag> tags;
+    private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "event_users",
-            joinColumns = { @JoinColumn(name = "event_id") },
-            inverseJoinColumns = { @JoinColumn(name = "user_id") }
+            joinColumns = {@JoinColumn(name = "event_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     public Event() {
     }
@@ -122,5 +123,33 @@ public class Event
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public void addTag(Tag tag) {
+        if (tags == null)
+            tags = new HashSet<>();
+        tags.add(tag);
+    }
+
+    public void addUser(User user) {
+        if (users == null)
+            users = new HashSet<>();
+        users.add(user);
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public void removeTag(Tag tag) {
+        tags.remove(tag);
+    }
+
+    public void removeUser(User user) {
+        users.remove(user);
     }
 }

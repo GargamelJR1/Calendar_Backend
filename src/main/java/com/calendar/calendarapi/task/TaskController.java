@@ -59,9 +59,38 @@ public class TaskController
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @PutMapping("")
-    public ResponseEntity<Task> updateTask(@RequestBody Task task) {
-        return taskService.updateTask(task)
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> updateTask(@RequestBody TaskDTO taskDTO, @PathVariable long id) {
+        Task taskToUpdate = taskService.getTaskById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+
+        Task task = taskDTO.toTask();
+
+        userService.getUserByEmail(taskDTO.userEmail())
+                .ifPresent(task::setUser);
+
+        taskService.getTaskById(taskDTO.masterTask())
+                .ifPresent(task::setMasterTask);
+
+        Set<String> tagNames = taskDTO.tags();
+        if (tagNames != null) {
+            for (String tagName : tagNames) {
+                tagService.getTagByName(tagName).ifPresentOrElse(
+                        task::addTag,
+                        () -> tagService.addTag(new Tag(0, tagName)).ifPresent(task::addTag));
+            }
+        }
+
+        taskToUpdate.setName(task.getName());
+        taskToUpdate.setDescription(task.getDescription());
+        taskToUpdate.setDeadline(task.getDeadline());
+        taskToUpdate.setCompleted(task.isCompleted());
+        taskToUpdate.setPriority(task.getPriority());
+        taskToUpdate.setTags(task.getTags());
+        taskToUpdate.setMasterTask(task.getMasterTask());
+        taskToUpdate.setUser(task.getUser());
+
+        return taskService.updateTask(taskToUpdate)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
