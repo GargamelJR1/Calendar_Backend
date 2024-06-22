@@ -3,7 +3,9 @@ package com.calendar.calendarapi.tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tag")
@@ -16,9 +18,12 @@ public class TagController
     }
 
     @GetMapping("")
-    public ResponseEntity<Set<Tag>> getAllTags() {
+    public ResponseEntity<List<Tag>> getAllTags() {
         return tagService.getAllTags()
-                .map(ResponseEntity::ok)
+                .map(tags -> {
+                    List<Tag> tagList = tags.stream().collect(Collectors.toList());
+                    return ResponseEntity.ok(tagList);
+                })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
