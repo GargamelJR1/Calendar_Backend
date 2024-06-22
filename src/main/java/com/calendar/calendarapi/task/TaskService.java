@@ -3,6 +3,7 @@ package com.calendar.calendarapi.task;
 import com.calendar.calendarapi.tag.Tag;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,10 @@ public class TaskService
 
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
+    }
+
+    public List<Task> getTasksByDates(LocalDate startDate, LocalDate endDate) {
+        return taskRepository.getTasksByDeadlineBetween(startDate.atStartOfDay(), endDate.atStartOfDay().plusDays(1).minusSeconds(1));
     }
 
     public Optional<Task> addTask(Task task) {

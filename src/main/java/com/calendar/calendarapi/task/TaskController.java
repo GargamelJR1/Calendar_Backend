@@ -1,5 +1,6 @@
 package com.calendar.calendarapi.task;
 
+import com.calendar.calendarapi.globalModels.Dates;
 import com.calendar.calendarapi.tag.Tag;
 import com.calendar.calendarapi.tag.TagService;
 import com.calendar.calendarapi.user.UserService;
@@ -26,6 +27,11 @@ public class TaskController
     @GetMapping("")
     public ResponseEntity<List<Task>> getAllTasks() {
         return ResponseEntity.ok(taskService.getAllTasks());
+    }
+
+    @PostMapping("")
+    public ResponseEntity<List<Task>> getTasksByDates(@RequestBody Dates dates) {
+        return ResponseEntity.ok(taskService.getTasksByDates(dates.startDate(), dates.endDate()));
     }
 
     @GetMapping("/masters")
