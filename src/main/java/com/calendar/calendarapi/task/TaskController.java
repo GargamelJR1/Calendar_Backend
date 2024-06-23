@@ -145,4 +145,14 @@ public class TaskController
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
+
+    @PutMapping("/complete/{id}/{completed}")
+    public ResponseEntity<Task> changeTaskCompletion(@PathVariable long id, @PathVariable boolean completed) {
+        Task task = taskService.getTaskById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+        task.setCompleted(completed);
+        return taskService.updateTask(task)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.badRequest().build());
+    }
 }
