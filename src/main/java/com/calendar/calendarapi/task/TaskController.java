@@ -59,8 +59,11 @@ public class TaskController
         userService.getUserByEmail(taskDTO.userEmail())
                 .ifPresent(task::setUser);
 
-        taskService.getTaskById(taskDTO.masterTask())
-                .ifPresent(task::setMasterTask);
+        // Sprawdzenie czy masterTask nie jest null
+        if (taskDTO.masterTask() != null) {
+            taskService.getTaskById(taskDTO.masterTask())
+                    .ifPresent(task::setMasterTask);
+        }
 
         return taskService.addTask(task)
                 .map(ResponseEntity::ok)
