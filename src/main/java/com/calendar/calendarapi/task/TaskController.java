@@ -7,6 +7,8 @@ import com.calendar.calendarapi.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 
@@ -151,6 +153,7 @@ public class TaskController
         Task task = taskService.getTaskById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Task not found"));
         task.setCompleted(completed);
+        task.setCompletedAt(completed ? LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) : null);
         return taskService.updateTask(task)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.badRequest().build());
