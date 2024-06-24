@@ -56,8 +56,10 @@ public class TaskController
             }
         }
 
-        userService.getUserByEmail(taskDTO.userEmail())
-                .ifPresent(task::setUser);
+        if (taskDTO.userEmail() != null) {
+            userService.getUserByEmail(taskDTO.userEmail())
+                    .ifPresent(task::setUser);
+        }
 
         // Sprawdzenie czy masterTask nie jest null
         if (taskDTO.masterTask() != null) {
