@@ -20,4 +20,6 @@ public interface TaskRepository extends JpaRepository<Task, Long>
     List<Task> getTasksByMasterTask(Task masterTask);
 
     List<Task> getTasksByDeadlineBetween(LocalDateTime deadline, LocalDateTime deadline2);
+
+    List<Task> getTasksByUserEmail(String userEmail);
 }

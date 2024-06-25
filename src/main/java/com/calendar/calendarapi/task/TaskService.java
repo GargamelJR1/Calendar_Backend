@@ -78,4 +78,8 @@ public class TaskService
         task.setMasterTask(masterTask);
         return Optional.of(taskRepository.save(task));
     }
+
+    public List<Task> getTasksByUserEmail(String userEmail) {
+        return taskRepository.getTasksByUserEmail(userEmail);
+    }
 }

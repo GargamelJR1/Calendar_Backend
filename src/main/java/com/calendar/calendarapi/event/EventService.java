@@ -1,5 +1,6 @@
 package com.calendar.calendarapi.event;
 
+import com.calendar.calendarapi.user.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,5 +44,9 @@ public class EventService
                 .orElseThrow(() -> new IllegalArgumentException("Event not found"));
         event.setImage(image);
         return Optional.of(eventRepository.save(event));
+    }
+
+    public Optional<List<Event>> getEventsByUser(User user) {
+        return Optional.of(eventRepository.getEventsByUsersContains(user));
     }
 }

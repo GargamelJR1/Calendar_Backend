@@ -4,6 +4,7 @@ import com.calendar.calendarapi.location.Location;
 import com.calendar.calendarapi.location.LocationService;
 import com.calendar.calendarapi.tag.Tag;
 import com.calendar.calendarapi.tag.TagService;
+import com.calendar.calendarapi.user.User;
 import com.calendar.calendarapi.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,15 @@ public class EventController
         return eventService.getAllEvents()
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/user/{email}")
+    public ResponseEntity<List<Event>> getEventsByUserEmail(@PathVariable String email) {
+        User user = userService.getUserByEmail(email).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        List<Event> events = eventService.getEventsByUser(user).orElseThrow(() -> new IllegalArgumentException("Events not found"));
+
+        return ResponseEntity.ok(events);
     }
 
     @PostMapping("/add")

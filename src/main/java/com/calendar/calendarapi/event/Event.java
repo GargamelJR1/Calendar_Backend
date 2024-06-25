@@ -3,6 +3,7 @@ package com.calendar.calendarapi.event;
 import com.calendar.calendarapi.location.Location;
 import com.calendar.calendarapi.tag.Tag;
 import com.calendar.calendarapi.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
@@ -43,6 +44,7 @@ public class Event
     )
     private Set<Tag> tags = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "event_users",

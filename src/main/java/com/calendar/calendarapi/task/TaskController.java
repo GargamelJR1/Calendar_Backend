@@ -36,6 +36,11 @@ public class TaskController
         return ResponseEntity.ok(taskService.getTasksByDates(dates.startDate(), dates.endDate()));
     }
 
+    @GetMapping("/user/{email}")
+    public ResponseEntity<List<Task>> getTasksByUserEmail(@PathVariable String email) {
+        return ResponseEntity.ok(taskService.getTasksByUserEmail(email));
+    }
+
     @GetMapping("/masters")
     public ResponseEntity<List<Task>> getMasterTasks() {
         List<Task> masterTasks = taskService.getAllTasks();
