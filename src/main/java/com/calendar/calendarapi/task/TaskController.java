@@ -66,7 +66,7 @@ public class TaskController
                     .ifPresent(task::setUser);
         }
 
-        // Sprawdzenie czy masterTask nie jest null
+        // If masterTask is not null, set the masterTask of the task
         if (taskDTO.masterTask() != null) {
             taskService.getTaskById(taskDTO.masterTask())
                     .ifPresent(task::setMasterTask);
