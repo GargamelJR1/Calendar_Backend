@@ -1,4 +1,4 @@
-There are two options to run this project.
+There are two options to run this project. Both options need installed and working Docker.
 1. as normal project in IDE (IntelliJ or sth)
 2. run Docker Compose (composeA file or manually created)
 
