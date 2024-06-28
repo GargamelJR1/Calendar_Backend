@@ -31,7 +31,8 @@ public class AuthenticationService
 
     public AuthenticationResponse registerUser(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            return authenticate(user);
+//            return authenticate(user);
+            throw new RuntimeException("User already exists");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
