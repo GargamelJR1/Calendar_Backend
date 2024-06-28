@@ -1,0 +1,8 @@
+services:
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=calendarPP'
+      - 'MYSQL_ROOT_PASSWORD=mysql'
+    ports:
+      - '33060:3306'
